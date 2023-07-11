@@ -96,7 +96,6 @@ ADD CONSTRAINT fk_productos_created_users FOREIGN KEY (created_by) REFERENCES us
 ALTER TABLE productos
 ADD CONSTRAINT fk_productos_update_users FOREIGN KEY (updated_by) REFERENCES users(id);
 
-ALTER TABLE inventarios
-ADD CONSTRAINT Pk_id_bodega PRIMARY KEY (id_bodega);
+
 
 

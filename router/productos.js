@@ -3,17 +3,17 @@ import dotenv from "dotenv";
 import mysql from "mysql2";
 import {Router} from "express"
 
-const appBodegas = Router();
+const appProductos = Router();
 //dotenv.config();
-//appBodegas.use(express.json());
+//appProductos.use(express.json());
 
 let conexion = undefined;
 
-appBodegas.use((req,res,next) => {
+appProductos.use((req,res,next) => {
 
     conexion=mysql.createPool({
         host: "172.16.49.20",
-        user: "root",
+        user: "sputnik",
         password: "Sp3tn1kC@",
         database: "prueba_backend",
         port: 3306
@@ -21,24 +21,24 @@ appBodegas.use((req,res,next) => {
     next();
 });
 
-appBodegas.get('/list', (req, res) => {
-
-    //console.log("hola")
+appProductos.get('/list', (req, res) => {
+    
 
     conexion.query(
-        /*sql*/`SELECT * FROM  bodegas
-        ORDER BY nombre ASC`,        
-        (error, data,fils) => {
-            console.log(error);
-            console.log(data);
-            console.log(fils);
-            res.send(data);
+        /*sql*/`SELECT id_producto, SUM(cantidad) AS Total
+            FROM inventarios
+            GROUP BY id_producto
+            ORDER BY Total DESC;`,        
+            (error, data,fils) => {
+                console.log(error);
+                console.log(data);
+                console.log(fils);
+                res.send(data);
         }
     );   
     
 })
-
-appBodegas.post('/newBodega', (req, res) => {
+appProductos.post('/newBodega', (req, res) => {
 
     // VALORES DE ENTRADA PARA CREAR UNA BODEGA (`id`, `nombre`, `id_responsable`, `estado`, `created_by`, `updated_by`, `created_at`, `updated_at`, `deleted_at`)
     conexion.query(
@@ -56,4 +56,6 @@ appBodegas.post('/newBodega', (req, res) => {
 });
 
 
-export default appBodegas;
+
+
+export default appProductos;
