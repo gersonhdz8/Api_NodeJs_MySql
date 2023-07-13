@@ -2,29 +2,19 @@ import express from 'express';
 import dotenv from "dotenv";
 import mysql from "mysql2";
 import {Router} from "express"
+import * as conexionDB from "../conexionDB/conexionDB.js";
+import {Exclude, plainToClass} from "class-transformer"
 
 const appProductos = Router();
 //dotenv.config();
 //appProductos.use(express.json());
 
-let conexion = undefined;
 
-appProductos.use((req,res,next) => {
-
-    conexion=mysql.createPool({
-        host: "172.16.49.20",
-        user: "sputnik",
-        password: "Sp3tn1kC@",
-        database: "prueba_backend",
-        port: 3306
-    })    
-    next();
-});
 
 appProductos.get('/list', (req, res) => {
     
-
-    conexion.query(
+    const sql= conexionDB.conexion;
+    sql.query(
         /*sql*/`SELECT id_producto, SUM(cantidad) AS Total
             FROM inventarios
             GROUP BY id_producto
@@ -39,9 +29,11 @@ appProductos.get('/list', (req, res) => {
     
 })
 appProductos.post('/newBodega', (req, res) => {
+    
+    const sql= conexionDB.conexion;
 
     // VALORES DE ENTRADA PARA CREAR UNA BODEGA (`id`, `nombre`, `id_responsable`, `estado`, `created_by`, `updated_by`, `created_at`, `updated_at`, `deleted_at`)
-    conexion.query(
+    sql.query(
         /*sql*/`INSERT INTO bodegas SET ?`,
         [req.body],
         (error, data,fils) => {

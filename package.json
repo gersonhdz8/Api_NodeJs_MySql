@@ -5,6 +5,7 @@
   "main": "app.js",
   "type": "module",
   "scripts": {
+    "tsc": "tsc -w",
     "dev": "node --watch app.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -12,10 +13,13 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "express": "4.18.2"
+    "express": "4.18.2",
+    "typescript": "^5.1.6"
   },
   "devDependencies": {
+    "class-transformer": "0.5.1",
     "dotenv": "16.3.1",
-    "mysql2": "3.5.1"
+    "mysql2": "3.5.1",
+    "reflect-metadata": "0.1.13"
   }
 }
